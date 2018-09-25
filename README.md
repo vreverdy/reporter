@@ -1,2 +1,2 @@
 # reporter
-A reporter class to facilitate lifetime debugging
+A reporter class to facilitate debugging
