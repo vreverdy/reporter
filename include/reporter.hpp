@@ -173,13 +173,42 @@ reporter<T>::~reporter()
 
 
 
+// -------------------------- REPORTER: ASSIGNMENT -------------------------- //
+// Copy assigns from another reporter, copying data
+template <class T>
+reporter<T>& reporter<T>::operator=(const reporter& other)
+{
+    _mutex.lock();
+    *_ptr = *other._ptr;
+    _log(*this, "reporter& reporter::operator=(const reporter&)");
+    _mutex.unlock();
+    return *this;
+}
+
+// Move assigns from another reporter, moving data
+template <class T>
+reporter<T>& reporter<T>::operator=(reporter&& other)
+{
+    _mutex.lock();
+    *_ptr = *other._ptr;
+    other._ptr = nullptr;
+    _log(*this, "reporter& reporter::operator=(reporter&&)");
+    _mutex.unlock();
+    return *this;
+}
+// -------------------------------------------------------------------------- //
+
+
+
 // -------------------- REPORTER: FUNCTION CALL OPERATORS ------------------- //
 // Overloads the function call operator
 template <class T>
 template <class... Args>
 void reporter<T>::operator()(Args&&...)
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()(Args&&...)");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const
@@ -187,7 +216,9 @@ template <class T>
 template <class... Args>
 void reporter<T>::operator()(Args&&...) const
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()(Args&&...) const");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for volatile
@@ -195,7 +226,9 @@ template <class T>
 template <class... Args>
 void reporter<T>::operator()(Args&&...) volatile
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()(Args&&...) volatile");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const volatile
@@ -203,63 +236,81 @@ template <class T>
 template <class... Args>
 void reporter<T>::operator()(Args&&...) const volatile
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()(Args&&...) const volatile");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for &
 template <class T>
 void reporter<T>::operator()() &
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() &");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const&
 template <class T>
 void reporter<T>::operator()() const&
 {
-    _log(*this, "void reporter::operator()() const&"); 
+    _mutex.lock();
+    _log(*this, "void reporter::operator()() const&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for volatile&
 template <class T>
 void reporter<T>::operator()() volatile&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() volatile&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const volatile&
 template <class T>
 void reporter<T>::operator()() const volatile&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() const volatile&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for &&
 template <class T>
 void reporter<T>::operator()() &&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() &&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const&&
 template <class T>
 void reporter<T>::operator()() const&&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() const&&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for volatile&&
 template <class T>
 void reporter<T>::operator()() volatile&&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() volatile&&");
+    _mutex.unlock();
 }
 
 // Overloads the function call operator for const volatile&&
 template <class T>
 void reporter<T>::operator()() const volatile&&
 {
+    _mutex.lock();
     _log(*this, "void reporter::operator()() const volatile&&");
+    _mutex.unlock();
 }
 // -------------------------------------------------------------------------- //
 
